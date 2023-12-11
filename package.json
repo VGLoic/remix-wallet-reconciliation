@@ -1,5 +1,5 @@
 {
-  "name": "remix-example",
+  "name": "remix-wallet-reconciliation",
   "private": true,
   "sideEffects": false,
   "type": "module",
@@ -7,7 +7,9 @@
     "build": "remix build",
     "dev": "remix dev --manual",
     "start": "remix-serve ./build/index.js",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@remix-run/css-bundle": "^2.3.1",
@@ -16,7 +18,9 @@
     "@remix-run/serve": "^2.3.1",
     "isbot": "^3.6.8",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "viem": "^1.19.11",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@remix-run/dev": "^2.3.1",
@@ -24,6 +28,7 @@
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "eslint": "^8.38.0",
+    "prettier": "3.1.1",
     "typescript": "^5.1.6"
   },
   "engines": {
