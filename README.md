@@ -77,12 +77,12 @@ Now the found possibilities in order to inform the server of the wallet address 
 ## Flow
 
 The flow in itself is short.
-1. Once the user has connected its wallet to the application, the client makes a http request to the server with the wallet address and the chain ID as payload,
+1. Once the user has connected its wallet to the application, the client makes a HTTP request to the server with the wallet address and the chain ID as payload,
 2. the server verifies that the address and chain ID in the payload are well-formatted. If formatting is ok, it builds the associated cookie with the wallet data and redirect the user to the current location with the associated cookie,
 3. the user now possesses a cookie containing the wallet state, and this cookie will be sent with every new request to the server, including routing,
 4. on every request or new page, the server is able to parse the expected cookie and access the wallet state of the user.
 
-Additionally, the http request at step 1 is made every time the user changes its connected wallet address or network. In that way, the cookie should always reflect the current state of the wallet.
+Additionally, the HTTP request at step 1 is made every time the user changes its connected wallet address or network. In that way, the cookie should always reflect the current state of the wallet.
 
 
 ```ts
