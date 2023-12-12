@@ -5,19 +5,16 @@ import { getBalance } from "viem/actions";
 import * as chains from "viem/chains";
 import { retrieveConnectedWalletFromCookie } from "~/wallet-cookie.server";
 
+function chainIdToChain(chainId: number) {
+  return Object.values(chains).find((c) => c.id === chainId);
+}
+
 export async function loader({ request }: LoaderFunctionArgs) {
   const userWallet = await retrieveConnectedWalletFromCookie(request);
-
-  if (!userWallet) {
-    return redirect("/");
-  }
-  const chain = Object.values(chains).find(
-    (c) => c.id === Number(userWallet.chainId),
-  );
-
-  if (!chain) {
-    return redirect("/");
-  }
+  if (!userWallet) return redirect("/");
+  
+  const chain = chainIdToChain(userWallet.chainId);
+  if (!chain) return redirect("/");
 
   const client = createPublicClient({
     transport: http(),
