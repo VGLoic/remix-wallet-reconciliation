@@ -1,4 +1,4 @@
-# Welcome to Remix & Wallet reconciliation example!
+# Reconcile Remix & Wallet
 
 This repository contains the code in order to share the user MetaMask wallet with the server in a Remix application. Said otherwise, it tries to reconcile the heavy client side approach of the wallet with the prefered server side approach of [Remix](https://remix.run/).
 
