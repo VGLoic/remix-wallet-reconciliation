@@ -26,7 +26,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const userWallet = await retrieveConnectedWalletFromCookie(request);
   // If parsing failed, we don't want to stay on this page as it is only for connected users
   if (!userWallet) return redirect("/");
-  
+
   const chain = chainIdToChain(userWallet.chainId);
   if (!chain) return redirect("/");
 
@@ -63,27 +63,30 @@ Currently, meta frameworks such as [NextJS](https://nextjs.org/) or [Remix](http
 **Mixing these meta-frameworks with the wallet is however non straightforward as the wallet state lives exclusively client side while we want to push for server side logic.**
 
 Before going further, it is important to consider what kind of application we are talking about. We can distinsuish two kinds of Ethereum related application.
+
 - The one with private data: data associated to a particular address is private and only accessible by authorised users. The authentication mechanism will generally be of the form of a Sign in with Ethereum. **In this kind of application, a session cookie usually exists between the server and the client so the server has already access to the wallet address. This repository is not about this kind of application.**
 - The usual one: all the data is public and accessible through a public API such as TheGraph. The client manages the connected wallet address and use it to query the wallet related data on the public API. **The server does not naturally have access to the wallet address in this case, this repository focus on this kind of application.**
 
 The possible solutions to our issue lives between two extreme solutions:
+
 1. Do nothing: we keep our logic client side as before. The price to pay is that we don't leverage the server at hand for all the user data,
 2. Integrate authentication such as SIWE: it will technically give the server the wallet address as a session is created between the server and the client. It is though an overkill feature wise as the data hosted by the API is public so we don't need a proper authentication mechanism. The price to pay is that an authentication step must be imposed client side.
 
 Now the found possibilities in order to inform the server of the wallet address are:
+
 - adding the wallet address as a part of the URL: either as query param or directly in the path, in that way, the server would be able to retrieve it using its router capabilities, **this is not explored here**,
 - introducing a [cookie](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies) in order to share the wallet state to the server: **this is the goal of this repository**.
 
 ## Flow
 
 The flow in itself is short.
+
 1. Once the user has connected its wallet to the application, the client makes a HTTP request to the server with the wallet address and the chain ID as payload,
 2. the server verifies that the address and chain ID in the payload are well-formatted. If formatting is ok, it builds the associated cookie with the wallet data and redirect the user to the current location with the associated cookie,
 3. the user now possesses a cookie containing the wallet state, and this cookie will be sent with every new request to the server, including routing,
 4. on every request or new page, the server is able to parse the expected cookie and access the wallet state of the user.
 
 Additionally, the HTTP request at step 1 is made every time the user changes its connected wallet address or network. In that way, the cookie should always reflect the current state of the wallet.
-
 
 ```ts
 // POST /user-wallet handler
@@ -123,7 +126,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
 function Layout({ children }: LayoutProps) {
   useSyncWallet();
-  
+
   return (...)
 }
 /**
@@ -187,21 +190,23 @@ function useSyncWallet() {
 Now we can stop using the client side wallet state for the routing or the data fetching and leverage the application server for these. All the wallet related logic, apart from transaction execution, can be moved away from the client into the server.
 
 The typical scenario would be:
+
 1. user navigates to a route,
 2. server checks for the wallet cookie and successfully parse it,
 3. server trigger the network requests based on the wallet state retrieved from the cookie,
-3. server renders the route component with the loaded data.
+4. server renders the route component with the loaded data.
 
 In the case where the wallet cookie is not present or not valid, the server is able to redirect the user to another route.
 
 Here is a dummy example for a Remix route with a simple component displaying user balance
+
 ```ts
 // Page loader, executed server side
 export async function loader({ request }: LoaderFunctionArgs) {
   const userWallet = await retrieveConnectedWalletFromCookie(request);
   // If parsing failed, we don't want to stay on this page as it is only for connected users
   if (!userWallet) return redirect("/");
-  
+
   const chain = chainIdToChain(userWallet.chainId);
   if (!chain) return redirect("/");
 

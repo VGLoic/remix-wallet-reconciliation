@@ -12,7 +12,7 @@ function chainIdToChain(chainId: number) {
 export async function loader({ request }: LoaderFunctionArgs) {
   const userWallet = await retrieveConnectedWalletFromCookie(request);
   if (!userWallet) return redirect("/");
-  
+
   const chain = chainIdToChain(userWallet.chainId);
   if (!chain) return redirect("/");
 
