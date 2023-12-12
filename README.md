@@ -2,7 +2,7 @@
 
 This repository contains the code in order to share the user MetaMask wallet with the server in a Remix application. Said otherwise, it tries to reconcile the heavy client side approach of the wallet with the prefered server side approach of [Remix](https://remix.run/).
 
-It enables the route loaders to have access to the connected user and efficiently perform the usual fetching logic related to the user address and network.
+This enables the route loaders to have access to the connected user and efficiently perform the usual fetching logic related to the user address and network.
 
 ## TLDR
 
@@ -11,9 +11,9 @@ This is one possible answer to the issue of leveraging the server in a dApp with
 - Remix application,
 - Not requiring authentication such as [Sign in with Ethereum](https://login.xyz/) (SIWE). Said otherwise, there are no privacy requirement regarding a particular wallet related data \*,
 
-The user is able to connect as usual its MetaMask wallet to the application. On successful connection, the wallet address and chain ID are sent backend side in order to perform a redirection while setting a minimalistic [Cookie](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies) in the user's browser.
+The user can connect their MetaMask wallet to the application as usual. On successful connection, the wallet address and chain ID are sent backend side in order to perform a redirection while setting a minimalistic [Cookie](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies) in the user's browser.
 
-On navigation, the cookie is sent alongside the request, hence allowing the route loaders to have access to the user address and the connected network in order to:
+During navigation, the cookie is sent with the request, thereby enabling the route loaders to access the user's address and the connected network in order to:
 
 - fetch the user data,
 - redirect the user in case of accessing a route that need a connected wallet.
@@ -54,9 +54,9 @@ export default function Balance() {
 
 ## Issue and motivation
 
-Interactions with a cryptocurrency wallet, e.g. [MetaMask extension](https://metamask.io), generally happen in the browser of the user as we want to keep the private key far away from a server. As such, Ethereum related applications have generally the logic around the wallet in the user's browser: client side. This is generally the case for data fetching, the app will retrieve the user wallet address, store it client side and use it for network requests in order to fetch data on some APIs, e.g. [TheGraph](https://thegraph.com/).
+Interactions with a cryptocurrency wallet, e.g. [MetaMask extension](https://metamask.io), generally happen in the browser of the user as we want to keep the private key far away from a server. In other words, Ethereum-related applications typically have the wallet logic in the user's browser, specifically on the client-side. This is generally the case for data fetching, the app will retrieve the user wallet address, store it client side and use it for network requests in order to fetch data on some APIs, e.g. [TheGraph](https://thegraph.com/).
 
-This kind of approach is working very well in the current state of the frontend world. As an example, one can consider a [React](https://react.dev/) app, bundled with [Vite](https://vitejs.dev/), managing wallet with [Wagmi](https://wagmi.sh/) and using [React-Query](https://tanstack.com/query/latest/docs/react/overview) for data fetching. It will give the developer a quick and efficient way to interact with the user's wallet and perform the needed requests based on the wallet address in order to retrieve the user data, all of this running perfectly client side.
+This approach works well in the current state of the frontend ecosystem. As an example, one can consider a [React](https://react.dev/) app, bundled with [Vite](https://vitejs.dev/), managing wallet with [Wagmi](https://wagmi.sh/) and using [React-Query](https://tanstack.com/query/latest/docs/react/overview) for data fetching. It will give the developer a quick and efficient way to interact with the user's wallet and perform the needed requests based on the wallet address in order to retrieve the user data, all of this running perfectly client side.
 
 Currently, meta frameworks such as [NextJS](https://nextjs.org/) or [Remix](https://remix.run/) are encouraging developers to leverage the application server. The goal is to simplify the code downloaded and ran client side by moving as much of the data fetching and logic to the server. In addition to the performance gain, these meta frameworks provide a more complete developer experience as the frontier between backend code and frontend code is lower.
 
@@ -78,8 +78,8 @@ Now the found possibilities in order to inform the server of the wallet address 
 
 The flow in itself is short.
 1. Once the user has connected its wallet to the application, the client makes a http request to the server with the wallet address and the chain ID as payload,
-2. the server verifies that the address and the chain ID in the payload are well formatted. If formatting is ok, it builds the associated cookie with the wallet data and redirect the user to the current location with the associated cookie,
-3. the user has now a cookie containing the wallet state, this cookie will be sent alongside every new request to the server, including routing,
+2. the server verifies that the address and chain ID in the payload are well-formatted. If formatting is ok, it builds the associated cookie with the wallet data and redirect the user to the current location with the associated cookie,
+3. the user now possesses a cookie containing the wallet state, and this cookie will be sent with every new request to the server, including routing,
 4. on every request or new page, the server is able to parse the expected cookie and access the wallet state of the user.
 
 Additionally, the http request at step 1 is made every time the user changes its connected wallet address or network. In that way, the cookie should always reflect the current state of the wallet.
