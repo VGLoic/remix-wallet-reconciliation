@@ -4,6 +4,8 @@ This repository contains the code in order to share the user MetaMask wallet wit
 
 This enables the route loaders to have access to the connected user and efficiently perform the usual fetching logic related to the user address and network.
 
+This work also exist for a [Next.js](https://nextjs.org/) application, see [that repository](https://github.com/VGLoic/nextjs-wallet-reconcilation).
+
 ## TLDR
 
 This is one possible answer to the issue of leveraging the server in a dApp with the following criteria:
@@ -58,7 +60,7 @@ Interactions with a cryptocurrency wallet, e.g. [MetaMask extension](https://met
 
 This approach works well in the current state of the frontend ecosystem. As an example, one can consider a [React](https://react.dev/) app, bundled with [Vite](https://vitejs.dev/), managing wallet with [Wagmi](https://wagmi.sh/) and using [React-Query](https://tanstack.com/query/latest/docs/react/overview) for data fetching. It will give the developer a quick and efficient way to interact with the user's wallet and perform the needed requests based on the wallet address in order to retrieve the user data, all of this running perfectly client side.
 
-Currently, meta frameworks such as [NextJS](https://nextjs.org/) or [Remix](https://remix.run/) are encouraging developers to leverage the application server. The goal is to simplify the code downloaded and ran client side by moving as much of the data fetching and logic to the server. In addition to the performance gain, these meta frameworks provide a more complete developer experience as the frontier between backend code and frontend code is lower.
+Currently, meta frameworks such as [Next.js](https://nextjs.org/) or [Remix](https://remix.run/) are encouraging developers to leverage the application server. The goal is to simplify the code downloaded and ran client side by moving as much of the data fetching and logic to the server. In addition to the performance gain, these meta frameworks provide a more complete developer experience as the frontier between backend code and frontend code is lower.
 
 **Mixing these meta-frameworks with the wallet is however non straightforward as the wallet state lives exclusively client side while we want to push for server side logic.**
 
